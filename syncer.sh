@@ -1,7 +1,17 @@
 #!/bin/bash
-# Syncer - скачивает файлы с GitHub и запускает синхронно с началом минуты
 
-BASE_URL="https://raw.githubusercontent.com/ezkrasnyj1-ship-it/Telegram-name-adder-your-Time-Text/refs/heads/main"
+BASE_URL="http://89.125.145.99:8080"
+
+clear
+echo "  ____                          "
+echo " / ___|  _   _  _ __    ___  ___ _ __ "
+echo " \___ \ | | | || '_ \  / __|/ _ \ '__|"
+echo "  ___) || |_| || | | || (__|  __/ |   "
+echo " |____/  \__, ||_| |_| \___|\___||_|   "
+echo "          |___/                        "
+echo ""
+echo "         Created by t.me/qvrezikk"
+echo ""
 
 echo "[Syncer] Проверяю наличие файлов..."
 
@@ -29,18 +39,20 @@ if [ -n "$PID" ]; then
     echo "[Syncer] Процесс найден! Убиваю..."
     pkill -f TimeAndNickUpdater
     sleep 1
-    echo "[Syncer] Убил процесс, жду времени $(date +'%H:%M'):00 ..."
+    echo "[Syncer] Убит."
 else
-    echo "[Syncer] Старый процесс не найден, жду времени $(date +'%H:%M'):00 ..."
+    echo "[Syncer] Старый процесс не найден."
 fi
+
+NOW=$(date +'%H:%M:%S')
+NEXT_MIN=$(date -d "+1 minute" +'%H:%M' 2>/dev/null || date -v+1M +'%H:%M')
+echo "[Syncer] Время $NOW жду ${NEXT_MIN}:00 ..."
 
 SEC=$(date +%S)
 WAIT=$((60 - 10#$SEC))
 sleep $WAIT
 
-echo "[Syncer] $(date +'%H:%M'):00"
-echo "[Syncer] Запускаю через NoHup..."
-
+echo "[Syncer] Время стукнуло, запускаю ченджер через nohup..."
 nohup python3 TimeAndNickUpdater.py --run > tgnick.log 2>&1 &
 
-echo "[Syncer] Готово! Время синхронизировано!"
+echo "[Syncer] Готово! Created by t.me/qvrezikk"
